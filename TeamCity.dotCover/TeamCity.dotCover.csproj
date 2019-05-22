@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    <Version>$(Version)</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+
+    <PackageId>TeamCity.dotCover</PackageId>
+    <Title>TeamCity dotCover integration</Title>
+    <Authors>NikolayP</Authors>
+    <PackageProjectUrl>https://github.com/JetBrains/teamcity-dotcover</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/JetBrains/teamcity-dotcover/raw/master/icon.png</PackageIconUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Copyright>JetBrains</Copyright>
+    <Description>Provides an integration TeamCity and dotCover.</Description>
+    <PackageTags>TeamCity dotCover</PackageTags>
+
+    <IncludeAssets>All</IncludeAssets>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SignAssembly>False</SignAssembly>
+    <StartupObject>TeamCity.dotCover.Program</StartupObject>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>TeamCity.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IoC.Container" Version="1.1.14" PrivateAssets="All" />
+    <PackageReference Include="IoC.Interception" Version="1.1.14" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)\pack\*">
+      <PackagePath>build\netcoreapp2.0;build\net45</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+
+    <Content Include="$(MSBuildThisFileDirectory)\bin\$(Configuration)\netcoreapp2.0\*.dll">
+      <PackagePath>build\netcoreapp2.0;build\net45</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+
+    <Content Include="$(MSBuildThisFileDirectory)\bin\$(Configuration)\netcoreapp2.0\TeamCity.dotCover.deps.json">
+      <PackagePath>build\netcoreapp2.0;build\net45</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+
+    <Content Include="$(MSBuildThisFileDirectory)\bin\$(Configuration)\netcoreapp2.0\TeamCity.dotCover.runtimeconfig.json">
+      <PackagePath>build\netcoreapp2.0;build\net45</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+
+  </ItemGroup>
+
+</Project>

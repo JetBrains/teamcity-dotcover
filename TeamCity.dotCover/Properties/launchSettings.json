@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "TeamCity.dotCover": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\dotnet\\dotnet.exe",
+      "commandLineArgs": "test /p:VSTestConsolePath=C:\\Projects\\TeamCity\\teamcity-dotcover\\TeamCity.dotCover\\bin\\Debug\\netcoreapp2.0\\TeamCity.dotCover.dll",
+      "workingDirectory": "C:\\Projects\\z",
+      "environmentVariables": {
+        "TCDC_TOOL_PATH": "C:\\Users\\Nikol\\.nuget\\packages\\jetbrains.dotcover.commandlinetools\\2019.1.1\\lib\\netcoreapp2.0\\dotnet-dotcover.exe"
+      }
+    }
+  }
+}
