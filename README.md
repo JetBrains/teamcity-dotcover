@@ -10,71 +10,30 @@ Provides the [<img src="https://cdn.worldvectorlogo.com/logos/teamcity.svg" heig
 
 * .NET Core SDK 2.0+
 
-
 ### Supported Platforms
 
 * .NET 4.5+
 * [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) 2.0+
 
+### Supported OS
+
+* Windows
+
 ### Usage scenarios
 
-For each test project:
+In brief, creating a test project and running tests collecting code coverage statistics in 3 lines:
 
-* Add a NuGet reference to the [Visual Studio Test Platform](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/).
-   
-   ```
-   dotnet add package Microsoft.NET.Test.Sdk
-   ```
-   
-* Add NuGet references to NuGet packages of the selected test framework and coresponding test adapter which supports [Visual Studio Test Platform](https://github.com/Microsoft/vstest). For example:
-   * MSTest [Framework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Adapter](https://www.nuget.org/packages/MSTest.TestAdapter/)
-   
-   ```
-   dotnet add package MSTest.TestFramework   
-   dotnet add package MSTest.TestAdapter
-   ```
-   
-   * XUnit [Framework](https://www.nuget.org/packages/xunit/) and [Adapter](https://www.nuget.org/packages/xunit.runner.visualstudio/)
-   
-   ```
-   dotnet add package xunit   
-   dotnet add package xunit.runner.visualstudio
-   ```
-   
-   * NUnit [Framework](https://www.nuget.org/packages/NUnit/) and [Adapter](https://www.nuget.org/packages/NUnit3TestAdapter/)
-   
-   ```
-   dotnet add package NUnit   
-   dotnet add package NUnit3TestAdapter
-   ```
-   
-   or others. 
-  
-Alternatively to two steps above, you could create the a test project from the command line using the specified [template](https://docs.microsoft.com/en-us/dotnet/articles/core/tools/dotnet-new):
+```
+dotnet new mstest
+dotnet add package TeamCity.dotCover
+dotnet test
+```
 
-   ```
-   dotnet new mstest
-   ```
+Where _mstest_ is the one of dotnet [project templates](https://github.com/dotnet/docs/blob/master/docs/core/tools/dotnet-new.md).
 
-   or
-
-   ```
-   dotnet new xunit
-   ```
-
-   or
-
-   ```
-   dotnet new nunit
-   ```
-
-* To support the TeamCity integration with dotCover add a NuGet reference to the [TeamCity dotCover package](https://www.nuget.org/packages/TeamCity.dotCover).
-
-   ```
-   dotnet add package TeamCity.dotCover
-   ```
+The command `dotnet add package TeamCity.dotCover` adds the TeamCity integration with dotCover add by referencing to to the [TeamCity dotCover integration package](https://www.nuget.org/packages/TeamCity.dotCover).
    
-Thus, the final project file could look like the following:
+The final test project might look like the following:
 
 ``` xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -91,7 +50,7 @@ Thus, the final project file could look like the following:
 </Project>
 ```
 
-To run tests under dotCover use the .NET CLI plugin for [<img src="https://cdn.worldvectorlogo.com/logos/teamcity.svg" height="20" align="center" alt="TeamCity" />](https://www.jetbrains.com/teamcity/) or other TeamCity runners with command equivalent to:
+To run tests under dotCover just use the [.NET CLI plugin](https://github.com/JetBrains/teamcity-dotnet-plugin) for [<img src="https://cdn.worldvectorlogo.com/logos/teamcity.svg" height="20" align="center" alt="TeamCity" />](https://www.jetbrains.com/teamcity/) or any other TeamCity runners which allow to run a command equivalent to:
 
 `dotnet test`
 
@@ -99,4 +58,7 @@ or
 
 `dotnet msbuild /t:VSTest`
 
-:warning: It is important to note you should avoid specifying code coverage options in these runners because of the current NuGet package already runs your tests under dotCover.
+### It is important to note:
+
+* you should avoid specifying code coverage options in runners because of the [TeamCity dotCover integration package](https://www.nuget.org/packages/TeamCity.dotCover) already runs your tests under dotCover
+* the gathering of code coverage statistics is turned off in the case when the tests are not running under TeamCity (for instance when tests are running locally)
