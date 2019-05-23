@@ -12,6 +12,6 @@
 
         public IEnumerable<string> Arguments => System.Environment.GetCommandLineArgs().Skip(1);
 
-        public bool TryGetEnvironmentVariable(string name, out string value) => (value = System.Environment.GetEnvironmentVariable(name)) != default;
+        public bool TryGetEnvironmentVariable(string name, out string? value) => (value = System.Environment.GetEnvironmentVariable(name)) != default;
     }
 }

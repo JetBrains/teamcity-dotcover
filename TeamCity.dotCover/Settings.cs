@@ -1,5 +1,6 @@
 ﻿namespace TeamCity.dotCover
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     internal class Settings : ISettings
     {
         private readonly string? _toolPath;
@@ -8,8 +9,8 @@
         public Settings(
             IEnvironment environment)
         {
-            environment.TryGetEnvironmentVariable("TCDC_TOOL_PATH", out _toolPath);
-            environment.TryGetEnvironmentVariable("TCDC_TRACE_FILE", out _traceFile);
+            environment.TryGetEnvironmentVariable("TC_TOOL_PATH", out _toolPath);
+            environment.TryGetEnvironmentVariable("TC_TRACE_FILE", out _traceFile);
         }
 
         public string? ToolPath => _toolPath;

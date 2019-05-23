@@ -3,6 +3,7 @@
     using System.IO;
 
     // ReSharper disable once UnusedMember.Global
+    // ReSharper disable once ClassNeverInstantiated.Global
     internal class Trace : ITrace
     {
         private readonly string? _traceFile;

@@ -8,6 +8,6 @@
 
         IEnumerable<string> Arguments { get; }
 
-        bool TryGetEnvironmentVariable(string name, out string value);
+        bool TryGetEnvironmentVariable(string name, out string? value);
     }
 }
