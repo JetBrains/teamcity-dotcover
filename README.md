@@ -10,7 +10,7 @@ Provides the [<img src="https://cdn.worldvectorlogo.com/logos/teamcity.svg" heig
 
 * .NET Core SDK 2.0+
 
-### Supported Platforms
+### Supported platforms
 
 * .NET 4.5+
 * [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) 2.0+
@@ -21,7 +21,7 @@ Provides the [<img src="https://cdn.worldvectorlogo.com/logos/teamcity.svg" heig
 
 ### Usage scenarios
 
-In brief, creating a test project and running tests collecting code coverage statistics in 3 lines:
+In brief, you can create a test project and run tests collecting code coverage statistics in 3 lines:
 
 ```
 dotnet new mstest
@@ -29,9 +29,9 @@ dotnet add package TeamCity.dotCover
 dotnet test
 ```
 
-Where _mstest_ is the one of dotnet [project templates](https://github.com/dotnet/docs/blob/master/docs/core/tools/dotnet-new.md).
+where _mstest_ is the one of dotnet [project templates](https://github.com/dotnet/docs/blob/master/docs/core/tools/dotnet-new.md).
 
-The command `dotnet add package TeamCity.dotCover` adds the TeamCity integration with dotCover add by referencing to to the [TeamCity dotCover integration package](https://www.nuget.org/packages/TeamCity.dotCover).
+The command `dotnet add package TeamCity.dotCover` adds the TeamCity integration with dotCover by referencing the [TeamCity dotCover integration package](https://www.nuget.org/packages/TeamCity.dotCover).
    
 The final test project might look like the following:
 
@@ -50,7 +50,7 @@ The final test project might look like the following:
 </Project>
 ```
 
-To run tests under dotCover just use the [.NET CLI plugin](https://github.com/JetBrains/teamcity-dotnet-plugin) for [<img src="https://cdn.worldvectorlogo.com/logos/teamcity.svg" height="20" align="center" alt="TeamCity" />](https://www.jetbrains.com/teamcity/) or any other TeamCity runners which allow to run a command equivalent to:
+To run tests under dotCover use the [.NET CLI plugin](https://github.com/JetBrains/teamcity-dotnet-plugin) for [<img src="https://cdn.worldvectorlogo.com/logos/teamcity.svg" height="20" align="center" alt="TeamCity" />](https://www.jetbrains.com/teamcity/) or any other TeamCity runners which allow running a command equivalent to:
 
 `dotnet test`
 
@@ -58,7 +58,7 @@ or
 
 `dotnet msbuild /t:VSTest`
 
-### It is important to note:
+### Important notes
 
-* you should avoid specifying code coverage options in runners because of the [TeamCity dotCover integration package](https://www.nuget.org/packages/TeamCity.dotCover) already runs your tests under dotCover
-* the gathering of code coverage statistics is turned off in the case when the tests are not running under TeamCity (for instance when tests are running locally)
+* Avoid specifying code coverage options in runners because the [TeamCity dotCover integration package](https://www.nuget.org/packages/TeamCity.dotCover) already runs your tests under dotCover.
+* The gathering of code coverage statistics is turned off when tests are not running under TeamCity (for instance when tests are running locally).
