@@ -58,6 +58,20 @@ or
 
 `dotnet msbuild /t:VSTest`
 
+### Passing dotCover arguments
+
+If you want to specify [any argument you’ve used previously with dotCover](https://www.jetbrains.com/help/dotcover/dotCover__Console_Runner_Commands.html#cover), you can do this by simply adding the environment variable starting by `TC_DC_` prefix to the variable name. 
+
+E.g., to specify an assembly filters, use the environment variable `TC-DC_Filters` instead of `--Filters`:
+
+`SET TC_DC_Filters=-:MyTests`
+
+### Diganostics
+
+To gather diagnostics information use the environment variable `TC_DC_TRACE_FILE` and specify path to a trace file there. For instance:
+
+`SET TC_DC_TRACE_FILE=c:\temp\trace.txt`
+
 ### Important notes
 
 * Avoid specifying code coverage options in runners because the [TeamCity dotCover integration package](https://www.nuget.org/packages/TeamCity.dotCover) already runs your tests under dotCover.

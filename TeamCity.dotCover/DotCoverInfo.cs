@@ -1,8 +1,8 @@
 // ReSharper disable StringLiteralTypo
 namespace TeamCity.dotCover
 {
+    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Text.RegularExpressions;
 
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -10,19 +10,22 @@ namespace TeamCity.dotCover
     {
         private static readonly Regex PackageVersion = new Regex("<PackageReference.*Version=\"(.+)\".*\\/>");
         private readonly IEnvironment _environment;
+        private readonly ISettings _settings;
         private readonly IFileSystem _fileSystem;
 
         public DotCoverInfo(
             IEnvironment environment,
+            ISettings settings,
             IFileSystem fileSystem)
         {
             _environment = environment;
+            _settings = settings;
             _fileSystem = fileSystem;
         }
 
         public string ToolPath => Path.GetFullPath($@"{BaseDirectory}\..\..\..\..\jetbrains.dotcover.commandlinetools\{GetDotCoverVersion()}\lib\netcoreapp2.0\dotnet-dotcover.exe");
 
-        public string CommandArgs => $"vstest {string.Join(" ", _environment.Arguments.Select(i => $"\"{i}\""))}";
+        public string CommandArgs => $"vstest {string.Join(" ", GetArgs())}";
 
         private string BaseDirectory => Path.GetDirectoryName(_environment.ExecutablePath);
 
@@ -39,6 +42,19 @@ namespace TeamCity.dotCover
             }
 
             return "2019.1.0";
+        }
+
+        private IEnumerable<string> GetArgs()
+        {
+            foreach (var environmentArgument in _environment.Arguments)
+            {
+                yield return $"\"{environmentArgument}\"";
+            }
+
+            foreach (var dotCoverArgument in _settings.DotCoverArgs)
+            {
+                yield return $"\"--dc{dotCoverArgument.Key}={dotCoverArgument.Value}\"";
+            }
         }
     }
 }
