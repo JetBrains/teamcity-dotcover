@@ -1,9 +1,8 @@
-﻿namespace TeamCity.dotCover
-{
-    internal interface IDotCoverInfo
-    {
-        string ToolPath { get; }
+﻿namespace TeamCity.dotCover;
 
-        string CommandArgs { get; }
-    }
+internal interface IDotCoverInfo
+{
+    string ToolPath { get; }
+
+    string CommandArgs { get; }
 }

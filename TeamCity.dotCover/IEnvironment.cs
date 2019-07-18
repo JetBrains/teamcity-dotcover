@@ -1,15 +1,14 @@
-﻿namespace TeamCity.dotCover
+﻿namespace TeamCity.dotCover;
+
+internal interface IEnvironment
 {
-    using System.Collections.Generic;
+    string ExecutablePath { get; }
 
-    internal interface IEnvironment
-    {
-        string ExecutablePath { get; }
+    IEnumerable<string> Arguments { get; }
 
-        IEnumerable<string> Arguments { get; }
+    IEnumerable<string> EnvironmentVariables { get; }
 
-        IEnumerable<string> EnvironmentVariables { get; }
+    string DotnetPath { get; }
 
-        bool TryGetEnvironmentVariable(string name, out string value);
-    }
+    bool TryGetEnvironmentVariable(string name, [MaybeNullWhen(false)] out string value);
 }

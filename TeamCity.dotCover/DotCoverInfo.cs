@@ -1,60 +1,64 @@
 // ReSharper disable StringLiteralTypo
-namespace TeamCity.dotCover
+namespace TeamCity.dotCover;
+
+using System.Text.RegularExpressions;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class DotCoverInfo : IDotCoverInfo
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text.RegularExpressions;
+    private static readonly Regex PackageVersion = new Regex("<PackageReference.*Version=\"(.+)\".*\\/>");
+    private readonly IEnvironment _environment;
+    private readonly ISettings _settings;
+    private readonly IFileSystem _fileSystem;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class DotCoverInfo : IDotCoverInfo
+    public DotCoverInfo(
+        IEnvironment environment,
+        ISettings settings,
+        IFileSystem fileSystem,
+        ITrace trace)
     {
-        private static readonly Regex PackageVersion = new Regex("<PackageReference.*Version=\"(.+)\".*\\/>");
-        private readonly IEnvironment _environment;
-        private readonly ISettings _settings;
-        private readonly IFileSystem _fileSystem;
+        _environment = environment;
+        _settings = settings;
+        _fileSystem = fileSystem;
+        trace.WriteLine($"Packages Path: {PackagesPath}");
+        trace.WriteLine($"Tool Path: {ToolPath}");
+    }
 
-        public DotCoverInfo(
-            IEnvironment environment,
-            ISettings settings,
-            IFileSystem fileSystem)
+    public string ToolPath => Path.GetFullPath($"{BinPath}{Path.PathSeparator}dotnet-dotcover.dll");
+
+    private string BinPath => Path.GetFullPath($"{PackagesPath}{Path.PathSeparator}jetbrains.dotcover.dotnetclitool{Path.PathSeparator}{GetDotCoverVersion()}{Path.PathSeparator}lib{Path.PathSeparator}netcoreapp2.0");
+
+    private string PackagesPath => Path.GetFullPath($"{BaseDirectory}{Path.PathSeparator}..{Path.PathSeparator}..{Path.PathSeparator}..{Path.PathSeparator}.."); 
+
+    public string CommandArgs => $"{_environment.DotnetPath} --additional-deps {BinPath}{Path.PathSeparator}DotNetCliTool.deps.json --additionalprobingpath {PackagesPath} vstest {string.Join(" ", GetArgs())}";
+
+    private string BaseDirectory => Path.GetDirectoryName(_environment.ExecutablePath) ?? string.Empty;
+
+    private string GetDotCoverVersion()
+    {
+        var projFile = BaseDirectory + @"\dotCoverRestore.csproj";
+        foreach (var line in _fileSystem.ReadFileLines(projFile))
         {
-            _environment = environment;
-            _settings = settings;
-            _fileSystem = fileSystem;
+            var match = PackageVersion.Match(line);
+            if (match.Success)
+            {
+                return match.Groups[1].Value;
+            }
         }
 
-        public string ToolPath => Path.GetFullPath($@"{BaseDirectory}\..\..\..\..\jetbrains.dotcover.commandlinetools\{GetDotCoverVersion()}\lib\netcoreapp2.0\dotnet-dotcover.exe");
+        throw new InvalidOperationException($"Cannot get dotCover version from project file \"{projFile}\".");
+    }
 
-        public string CommandArgs => $"vstest {string.Join(" ", GetArgs())}";
-
-        private string BaseDirectory => Path.GetDirectoryName(_environment.ExecutablePath);
-
-        private string GetDotCoverVersion()
+    private IEnumerable<string> GetArgs()
+    {
+        foreach (var environmentArgument in _environment.Arguments)
         {
-            var projFile = BaseDirectory + @"\dotCoverRestore.csproj";
-            foreach (var line in _fileSystem.ReadFileLines(projFile))
-            {
-                var match = PackageVersion.Match(line);
-                if (match.Success)
-                {
-                    return match.Groups[1].Value;
-                }
-            }
-
-            return "2019.1.0";
+            yield return $"\"{environmentArgument}\"";
         }
 
-        private IEnumerable<string> GetArgs()
+        foreach (var dotCoverArgument in _settings.DotCoverArgs)
         {
-            foreach (var environmentArgument in _environment.Arguments)
-            {
-                yield return $"\"{environmentArgument}\"";
-            }
-
-            foreach (var dotCoverArgument in _settings.DotCoverArgs)
-            {
-                yield return $"\"--dc{dotCoverArgument.Key}={dotCoverArgument.Value}\"";
-            }
+            yield return $"\"--dc{dotCoverArgument.Key}={dotCoverArgument.Value}\"";
         }
     }
 }

@@ -1,11 +1,8 @@
-﻿namespace TeamCity.dotCover
+﻿namespace TeamCity.dotCover;
+
+internal interface IFileSystem
 {
-    using System.Collections.Generic;
+    bool FileExists(string path);
 
-    internal interface IFileSystem
-    {
-        bool FileExists(string path);
-
-        IEnumerable<string> ReadFileLines(string path);
-    }
+    IEnumerable<string> ReadFileLines(string path);
 }

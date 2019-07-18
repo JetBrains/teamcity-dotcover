@@ -1,7 +1,6 @@
-﻿namespace TeamCity.dotCover
+﻿namespace TeamCity.dotCover;
+
+internal interface ITrace
 {
-    internal interface ITrace
-    {
-        void WriteLine(string? text);
-    }
+    void WriteLine(string? text);
 }

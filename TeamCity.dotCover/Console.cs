@@ -1,28 +1,25 @@
-﻿namespace TeamCity.dotCover
+﻿namespace TeamCity.dotCover;
+
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+internal class Console : IConsole
 {
-    using System.Diagnostics.CodeAnalysis;
-
-    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-    internal class Console : IConsole
+    public void WriteStdLine(string? text)
     {
-        public void WriteStdLine(string? text)
+        if (text == default)
         {
-            if (text == default)
-            {
-                return;
-            }
-
-            System.Console.Out.WriteLine(text);
+            return;
         }
 
-        public void WriteErrLine(string? error)
-        {
-            if (error == default)
-            {
-                return;
-            }
+        System.Console.Out.WriteLine(text);
+    }
 
-            System.Console.Error.WriteLine(error);
+    public void WriteErrLine(string? error)
+    {
+        if (error == default)
+        {
+            return;
         }
+
+        System.Console.Error.WriteLine(error);
     }
 }

@@ -1,9 +1,7 @@
-﻿namespace TeamCity.dotCover
-{
-    using System;
+﻿// ReSharper disable UnusedMember.Global
+namespace TeamCity.dotCover;
 
-    internal interface IProcessRunner: IDisposable
-    {
-        int Run();
-    }
+internal interface IProcessRunner: IDisposable
+{
+    int Run();
 }

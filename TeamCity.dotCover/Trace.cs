@@ -1,26 +1,23 @@
-﻿namespace TeamCity.dotCover
+﻿namespace TeamCity.dotCover;
+
+// ReSharper disable once UnusedMember.Global
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class Trace : ITrace
 {
-    using System.IO;
+    private readonly string? _traceFile;
 
-    // ReSharper disable once UnusedMember.Global
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class Trace : ITrace
+    public Trace(ISettings settings)
     {
-        private readonly string? _traceFile;
+        _traceFile = settings.TraceFile;
+    }
 
-        public Trace(ISettings settings)
+    public void WriteLine(string? text)
+    {
+        if (_traceFile == default || text == default)
         {
-            _traceFile = settings.TraceFile;
+            return;
         }
 
-        public void WriteLine(string? text)
-        {
-            if (_traceFile == default || text == default)
-            {
-                return;
-            }
-
-            File.AppendAllText(_traceFile, text + "\n");
-        }
+        File.AppendAllText(_traceFile, text + "\n");
     }
 }

@@ -1,10 +1,6 @@
-﻿namespace TeamCity.dotCover
-{
-    using System;
-    using System.Diagnostics;
+﻿namespace TeamCity.dotCover;
 
-    internal interface IToolProcess: IDisposable
-    {
-        Process CreateProcess();
-    }
+internal interface IToolProcess: IDisposable
+{
+    Process CreateProcess();
 }

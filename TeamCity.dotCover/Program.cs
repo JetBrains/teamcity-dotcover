@@ -1,45 +1,46 @@
-﻿namespace TeamCity.dotCover
+﻿namespace TeamCity.dotCover;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class Program: IDisposable
 {
-    using System;
-    using IoC;
-
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class Program: IDisposable
+    public static int Main()
     {
-        public static int Main()
+        try
         {
-            using var container = Container.Create().Using<IoCConfiguration>();
-            using var program = container.BuildUp<Program>();
-            return program.Run();
+            return Composer.ResolveProgram().Run();
         }
-
-        private readonly IProcessRunner _processRunner;
-        private readonly IConsole _console;
-
-        internal Program(
-            IProcessRunner processRunner,
-            IConsole console)
+        finally
         {
-            _processRunner = processRunner;
-            _console = console;
+            Composer.FinalDispose();
         }
+    }
 
-        void IDisposable.Dispose()
+    private readonly IProcessRunner _processRunner;
+    private readonly IConsole _console;
+
+    internal Program(
+        IProcessRunner processRunner,
+        IConsole console)
+    {
+        _processRunner = processRunner;
+        _console = console;
+    }
+
+    void IDisposable.Dispose()
+    {
+        _processRunner.Dispose();
+    }
+
+    private int Run()
+    {
+        try
         {
-            _processRunner.Dispose();
+            return _processRunner.Run();
         }
-
-        private int Run()
+        catch (ToolException toolException)
         {
-            try
-            {
-                return _processRunner.Run();
-            }
-            catch (ToolException toolException)
-            {
-                _console.WriteErrLine(toolException.Message);
-                return 1;
-            }
+            _console.WriteErrLine(toolException.Message);
+            return 1;
         }
     }
 }

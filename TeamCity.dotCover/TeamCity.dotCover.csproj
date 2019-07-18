@@ -2,9 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
     <Version>$(Version)</Version>
@@ -30,8 +29,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IoC.Container" Version="1.1.14" PrivateAssets="All" />
-    <PackageReference Include="IoC.Interception" Version="1.1.14" PrivateAssets="All" />
+    <PackageReference Include="Pure.DI" Version="1.1.44" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.DotNet.Cli.Utils" Version="2.0.0" IncludeAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

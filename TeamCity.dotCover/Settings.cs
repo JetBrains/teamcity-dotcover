@@ -1,44 +1,40 @@
-﻿namespace TeamCity.dotCover
+﻿namespace TeamCity.dotCover;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class Settings : ISettings
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    private const string VarPrefix = "TC_DC_";
+    private readonly Dictionary<string, string> _vars = new Dictionary<string, string>();
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class Settings : ISettings
+    public Settings(
+        IEnvironment environment)
     {
-        private const string VarPrefix = "TC_DC_";
-        private readonly Dictionary<string, string> _vars = new Dictionary<string, string>();
-
-        public Settings(
-            IEnvironment environment)
+        foreach (var name in environment.EnvironmentVariables.Where(i => i.ToUpper().StartsWith(VarPrefix)))
         {
-            foreach (var name in environment.EnvironmentVariables.Where(i => i.ToUpper().StartsWith(VarPrefix)))
+            if (name.Length > VarPrefix.Length && environment.TryGetEnvironmentVariable(name, out var val))
             {
-                if (name.Length > VarPrefix.Length && environment.TryGetEnvironmentVariable(name, out var val))
+                var key = name.Substring(VarPrefix.Length, name.Length - VarPrefix.Length);
+                switch (key.ToUpper())
                 {
-                    var key = name.Substring(VarPrefix.Length, name.Length - VarPrefix.Length);
-                    switch (key.ToUpper())
-                    {
-                        case "TOOL_PATH":
-                            ToolPath = val;
-                            break;
+                    case "TOOL_PATH":
+                        ToolPath = val;
+                        break;
 
-                        case "TRACE_FILE":
-                            TraceFile = val;
-                            break;
+                    case "TRACE_FILE":
+                        TraceFile = val;
+                        break;
 
-                        default:
-                            _vars[key] = val;
-                            break;
-                    }
+                    default:
+                        _vars[key] = val;
+                        break;
                 }
             }
         }
-
-        public string? ToolPath { get; }
-
-        public string? TraceFile { get; }
-
-        public IReadOnlyDictionary<string, string> DotCoverArgs => _vars;
     }
+
+    public string? ToolPath { get; }
+
+    public string? TraceFile { get; }
+
+    public IReadOnlyDictionary<string, string> DotCoverArgs => _vars;
 }

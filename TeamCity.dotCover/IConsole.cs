@@ -1,9 +1,8 @@
-﻿namespace TeamCity.dotCover
-{
-    internal interface IConsole
-    {
-        void WriteStdLine(string? text);
+﻿namespace TeamCity.dotCover;
 
-        void WriteErrLine(string? error);
-    }
+internal interface IConsole
+{
+    void WriteStdLine(string? text);
+
+    void WriteErrLine(string? error);
 }

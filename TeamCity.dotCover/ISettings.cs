@@ -1,13 +1,10 @@
-﻿namespace TeamCity.dotCover
+﻿namespace TeamCity.dotCover;
+
+internal interface ISettings
 {
-    using System.Collections.Generic;
+    string? ToolPath { get; }
 
-    internal interface ISettings
-    {
-        string? ToolPath { get; }
+    string? TraceFile { get; }
 
-        string? TraceFile { get; }
-
-        IReadOnlyDictionary<string, string> DotCoverArgs { get; }
-    }
+    IReadOnlyDictionary<string, string> DotCoverArgs { get; }
 }
